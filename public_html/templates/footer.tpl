@@ -53,6 +53,7 @@ function getAllCategoryFoot($con, $funcId){
 
     $sql = "";
     $sql .= "SELECT id                  ";
+    $sql .= "     , urlkey             ";
     $sql .= "     , category            ";
     $sql .= "  FROM category            ";
     $sql .= " WHERE deldate IS NULL     ";
@@ -69,7 +70,7 @@ function getAllCategoryFoot($con, $funcId){
     if ($recCnt != 0){
         while ($row = pg_fetch_assoc($query)){
             $html .= <<< EOF
-                <li class="list-categories" style="border-bottom: 1px solid rgba(255, 255, 255, 0.460); font-family: 'SVN-AgencyFBbold'; font-size: 20px;"><a href="/transfer-page">{$row['category']}</a></li>
+                <li class="list-categories" style="border-bottom: 1px solid rgba(255, 255, 255, 0.460); font-family: 'SVN-AgencyFBbold'; font-size: 20px;"><a href="danh-muc.php?url={$row['urlkey']}">{$row['category']}</a></li>
             EOF;
         }
     }

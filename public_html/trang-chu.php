@@ -6,8 +6,6 @@ require_once ('lib.php');
 
 //Initialization
 $funcId       = 'homepage';
-$message      = '';
-$messageClass = '';
 
 session_start();
 
@@ -31,31 +29,6 @@ $htmlNewsArsenal = getNewsArsenal($con, $funcId);
 
 $htmlAnalysisArsenal = '';
 $htmlAnalysisArsenal = getAnalysisArsenal($con, $funcId);
-
-//Message HTML
-if(isset($_SESSION['message']) && strlen($_SESSION['message'])){
-    $message      .= $_SESSION['message'];
-    $messageClass .= $_SESSION['messageClass'];
-    $iconClass    .= $_SESSION['iconClass'];
-    $_SESSION['message']      = '';
-    $_SESSION['messageClass'] = '';
-    $_SESSION['iconClass']    = '';
-}
-$messageHtml  = '';
-if(strlen($message)){
-    $messageHtml = <<< EOF
-    <div class="alert {$messageClass} alert-dismissible">
-        <div class="row">
-            <div class="icon">
-                <i class="{$iconClass}"></i>
-            </div>
-            <div class="col-10">
-                {$message}
-            </div>
-        </div>
-    </div>
-EOF;
-}
 
 //-----------------------------------------------------------
 // HTML
@@ -122,9 +95,12 @@ echo <<<EOF
                         </div>
                     </div>
                 </div>
-                <div class="pagination mt-5">
-                    <a class="loadMore" href="/news-page">Xem thêm&nbsp;<i class="fas fa-arrow-right"></i></a>
+                <div class="d-flex justify-content-center block-mt">
+                    <div class="pagination mt-5">
+                        <a class="loadMore" href="/news-page">Xem thêm&nbsp;<i class="fas fa-arrow-right"></i></a>
+                    </div>
                 </div>
+
                 <div class="mt-5">
                     <div class="news-transfer-arsenal">
                         <h2 class="news-transfer-title-arsenal">
@@ -132,8 +108,10 @@ echo <<<EOF
                         </h2>
                         <div class="content-news-transfer">
                             {$htmlTransferNews}
-                            <div class="pagination">
-                                <a class="loadMore" href="/news-page">Xem thêm&nbsp;<i class="fas fa-arrow-right"></i></a>
+                            <div class="d-flex justify-content-center block-mt">
+                                <div class="pagination">
+                                    <a class="loadMore" href="danh-muc.php?url=tin-chuyen-nhuong">Xem thêm&nbsp;<i class="fas fa-arrow-right"></i></a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -143,8 +121,10 @@ echo <<<EOF
                         </h2>
                         <div class="content-news-of-arsenal">
                             {$htmlNewsArsenal}
-                            <div class="pagination">
-                                <a class="loadMore" href="/news-page">Xem thêm&nbsp;<i class="fas fa-arrow-right"></i></a>
+                            <div class="d-flex justify-content-center block-mt">
+                                <div class="pagination">
+                                    <a class="loadMore" href="danh-muc.php?url=tin-arsenal">Xem thêm&nbsp;<i class="fas fa-arrow-right"></i></a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -155,8 +135,10 @@ echo <<<EOF
                         <div class="row">
                             {$htmlAnalysisArsenal}
                         </div>
-                        <div class="pagination">
-                            <a class="loadMore" href="#">Xem thêm&nbsp;<i class="fas fa-arrow-right"></i></a>
+                        <div class="d-flex justify-content-center block-mt">
+                            <div class="pagination">
+                                <a class="loadMore" href="danh-muc.php?url=phan-tich">Xem thêm&nbsp;<i class="fas fa-arrow-right"></i></a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -195,7 +177,8 @@ function getOutstandingNews($con, $funcId){
     $sql .= "     , thumbnail           ";
     $sql .= "  FROM news                ";
     $sql .= " WHERE deldate IS NULL     ";
-    $sql .= " ORDER BY id ASC           ";
+    $sql .= " ORDER BY id DESC          ";
+    $sql .= "     , createdate DESC     ";
     $sql .= " LIMIT 3                   ";
 
     $query = pg_query_params($con, $sql, $pgParam);
@@ -213,9 +196,7 @@ function getOutstandingNews($con, $funcId){
     foreach ($newsArray as $k => $v){
         $titleEncoded = urlencode(str_replace(' ', '-', $newsArray[$k]['title']));
         $urlRedirect = 'tin-tuc.php?key='.$newsArray[$k]['id'].'&'.$titleEncoded.'';
-        if ($k !== 0){
-            $active = '';
-        }
+        if ($k !== 0) $active = '';
         $html .= <<< EOF
             <div class="carousel-item {$active}">
                 <a href="{$urlRedirect}">
@@ -242,12 +223,12 @@ function getOutstandingNewsNext($con, $funcId){
     $sql .= "     , title               ";
     $sql .= "     , shortdescription    ";
     $sql .= "     , thumbnail           ";
-    $sql .= "     , createby           ";
+    $sql .= "     , createby            ";
     $sql .= "  FROM news                ";
     $sql .= " WHERE deldate IS NULL     ";
-    $sql .= " ORDER BY id               ";
+    $sql .= " ORDER by createdate DESC  ";
     $sql .= " OFFSET 3 ROWS             ";
-    $sql .= " FETCH NEXT 1 ROWS ONLY    ";
+    $sql .= " LIMIT 1                   ";
 
     $query = pg_query_params($con, $sql, $pgParamOne);
     if (!$query){
@@ -285,12 +266,12 @@ EOF;
     $sql .= "     , title               ";
     $sql .= "     , shortdescription    ";
     $sql .= "     , thumbnail           ";
-    $sql .= "     , createby           ";
+    $sql .= "     , createby            ";
     $sql .= "  FROM news                ";
     $sql .= " WHERE deldate IS NULL     ";
-    $sql .= " ORDER BY id               ";
+    $sql .= " ORDER BY createdate DESC  ";
     $sql .= " OFFSET 4 ROWS             ";
-    $sql .= " FETCH NEXT 3 ROWS ONLY    ";
+    $sql .= " LIMIT 3                   ";
 
     $query = pg_query_params($con, $sql, $pgParamThree);
     if (!$query){
@@ -307,7 +288,7 @@ EOF;
             $htmlThree .= <<< EOF
                 <div class="col-lg-4 col-sm-12 mt-5">
                     <a href="{$urlRedirect}">
-                        <img src="{$row['thumbnail']}" class="card-img-top img-fuild" alt="{$row['thumbnail']}">
+                        <img src="{$row['thumbnail']}" class="card-img-top img-fuild object-fit-image" alt="{$row['thumbnail']}">
                     </a>
                     <a href="{$urlRedirect}" class="title-content-h2">
                         <h3 class="card-title title-laste-news limit-text-line">{$row['title']}</h3>
@@ -338,7 +319,7 @@ function getTransferNews($con, $funcId){
     $sql .= "  FROM news                ";
     $sql .= " WHERE deldate IS NULL     ";
     $sql .= " AND category = 2          ";
-    $sql .= " ORDER BY id ASC           ";
+    $sql .= " ORDER BY createdate DESC  ";
     $sql .= " LIMIT 3                   ";
 
     $query = pg_query_params($con, $sql, $pgParam);
@@ -357,7 +338,7 @@ function getTransferNews($con, $funcId){
                 <div class="container content-news-transfer">
                     <div class="row">
                         <a href="{$urlRedirect}" class="col-lg-5">
-                            <img src="{$row['thumbnail']}" alt="{$row['thumbnail']}" class="card-img-top img-fuild">
+                            <img src="{$row['thumbnail']}" alt="{$row['thumbnail']}" class="card-img-top img-fuild object-fit-image">
                         </a>
                         <div class="col-lg-7 text-news-transfer mt-3">
                             <a class="header-news-transfer limit-text-line" href="{$urlRedirect}">{$row['title']}</a>
@@ -389,7 +370,7 @@ function getNewsArsenal($con, $funcId){
     $sql .= "  FROM news                ";
     $sql .= " WHERE deldate IS NULL     ";
     $sql .= " AND category = 1          ";
-    $sql .= " ORDER BY id ASC           ";
+    $sql .= " ORDER BY createdate DESC  ";
     $sql .= " LIMIT 3                   ";
 
     $query = pg_query_params($con, $sql, $pgParam);
@@ -408,7 +389,7 @@ function getNewsArsenal($con, $funcId){
                 <div class="container content-news-of-arsenal">
                     <div class="row">
                         <a href="{$urlRedirect}" class="col-lg-5">
-                            <img src="{$row['thumbnail']}" alt="{$row['thumbnail']}" class="card-img-top img-fuild">
+                            <img src="{$row['thumbnail']}" alt="{$row['thumbnail']}" class="card-img-top img-fuild object-fit-image">
                         </a>
                         <div class="col-lg-7 text-news-transfer mt-3">
                             <a href="{$urlRedirect}" class="header-news-transfer limit-text-line">{$row['title']}</a>
@@ -440,7 +421,7 @@ function getAnalysisArsenal($con, $funcId){
     $sql .= "  FROM news                ";
     $sql .= " WHERE deldate IS NULL     ";
     $sql .= " AND category = 3          ";
-    $sql .= " ORDER BY id ASC           ";
+    $sql .= " ORDER BY createdate DESC  ";
     $sql .= " LIMIT 3                   ";
 
     $query = pg_query_params($con, $sql, $pgParam);
@@ -456,9 +437,9 @@ function getAnalysisArsenal($con, $funcId){
             $titleEncoded = urlencode(str_replace(' ', '-', $row['title']));
             $urlRedirect = 'tin-tuc.php?key='.$row['id'].'&'.$titleEncoded.'';
             $html .= <<< EOF
-                <div class="col-lg-4 col-sm-12 mt-5">
+                <div class="col-lg-4 col-sm-12 mt-3">
                     <a href="{$urlRedirect}">
-                        <img src="{$row['thumbnail']}" class="card-img-top img-fuild" alt="{$row['thumbnail']}">
+                        <img src="{$row['thumbnail']}" class="card-img-top img-fuild object-fit-image" alt="{$row['thumbnail']}">
                     </a>
                     <a href="{$urlRedirect}" class="title-content-h2">
                         <h3 class="header-news-transfer card-title title-laste-news">{$row['title']}</h3>

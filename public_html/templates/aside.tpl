@@ -4,6 +4,10 @@ $funcId = 'aside';
 
 $con = openDB();
 
+$param = getParam();
+
+$valueKeyWord = $param['tu-khoa'] ?? '';
+
 $htmlDisperserNews = '';
 $htmlDisperserNews = getDisperserNews($con, $funcId);
 
@@ -13,8 +17,8 @@ print <<< EOF
 <div class="box-search">
     <h3 style="font-family: 'SVN-AgencyFBbold'; text-transform: uppercase; border-bottom: 4px solid rgba(0, 0, 0, 0.15);padding-bottom: 18px; margin-bottom: 26px; color: #454d59;">
         Tìm kiếm</h3>
-    <form id="search-form">
-        <input type="text" placeholder="Từ khoá" class="search-input s">
+    <form action="tim-kiem.php" method="GET" id="search-form">
+        <input type="text" name="tu-khoa" placeholder="Từ khoá" class="search-input s" value="{$valueKeyWord}">
         <button class="search-img" type="submit">
             <i class="fa fa-search"></i>
         </button>
@@ -167,7 +171,7 @@ function getDisperserNews($con, $funcId){
     $sql .= "  FROM news                ";
     $sql .= " WHERE deldate IS NULL     ";
     $sql .= " AND category = 4          ";
-    $sql .= " ORDER BY id ASC           ";
+    $sql .= " ORDER BY createdate DESC  ";
     $sql .= " LIMIT 3                   ";
 
     $query = pg_query_params($con, $sql, $pgParam);

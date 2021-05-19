@@ -5,10 +5,10 @@
  */
 function openDB(){
     $dsn = array(
-        'host'     => 'localhost',
+        'host'     => '139.59.120.51',
         'port'     => '5432',
         'user'     => 'postgres',
-        'dbname'   => 'arsequan_chanh',
+        'dbname'   => 'arsenalquan',
         'password' => '123456'
     );
 
@@ -121,5 +121,182 @@ function checkImage($image){
         $thumbnail = $image;
     }
     return $thumbnail;
+}
+
+function getAllCategory($con, $funcId){
+    $pgParam = [];
+    $recCnt = 0;
+
+    $sql = "";
+    $sql .= "SELECT id                  ";
+    $sql .= "     , icon                ";
+    $sql .= "     , category            ";
+    $sql .= "     , urlkey              ";
+    $sql .= "  FROM category            ";
+    $sql .= " WHERE deldate IS NULL     ";
+    $sql .= " ORDER BY id ASC           ";
+
+    $query = pg_query_params($con, $sql, $pgParam);
+    if (!$query){
+        systemError('systemError(' . $funcId . ') SQL Error：', $sql . print_r($pgParam, true));
+    } else {
+        $recCnt = pg_num_rows($query);
+    }
+
+    $html = '';
+    if ($recCnt != 0){
+        while ($row = pg_fetch_assoc($query)){
+            $icon = html_entity_decode($row['icon']);
+
+            $html .= <<< EOF
+                <li class="nav-item">
+                    <a href="danh-muc.php?url={$row['urlkey']}" class="nav-link">{$icon}&nbsp{$row['category']}</a>
+                </li>
+EOF;
+        }
+    }
+    return $html;
+}
+
+function getAllCategoryFoot($con, $funcId){
+    $pgParam = [];
+    $recCnt = 0;
+
+    $sql = "";
+    $sql .= "SELECT id                  ";
+    $sql .= "     , urlkey              ";
+    $sql .= "     , category            ";
+    $sql .= "  FROM category            ";
+    $sql .= " WHERE deldate IS NULL     ";
+    $sql .= " ORDER BY id ASC           ";
+
+    $query = pg_query_params($con, $sql, $pgParam);
+    if (!$query){
+        systemError('systemError(' . $funcId . ') SQL Error：', $sql . print_r($pgParam, true));
+    } else {
+        $recCnt = pg_num_rows($query);
+    }
+
+    $html = '';
+    if ($recCnt != 0){
+        while ($row = pg_fetch_assoc($query)){
+            $html .= <<< EOF
+                <li class="list-categories" style="border-bottom: 1px solid rgba(255, 255, 255, 0.460); font-family: 'SVN-AgencyFBbold'; font-size: 20px;"><a href="danh-muc.php?url={$row['urlkey']}">{$row['category']}</a></li>
+EOF;
+        }
+    }
+    return $html;
+}
+
+function getDisperserNews($con, $funcId){
+    $newsArray = [];
+    $pgParam = [];
+    $recCnt = 0;
+    $active = 'active';
+
+    $sql = "";
+    $sql .= "SELECT id                  ";
+    $sql .= "     , title               ";
+    $sql .= "     , thumbnail           ";
+    $sql .= "  FROM news                ";
+    $sql .= " WHERE deldate IS NULL     ";
+    $sql .= " AND category = 4          ";
+    $sql .= " ORDER BY createdate DESC  ";
+    $sql .= " LIMIT 3                   ";
+
+    $query = pg_query_params($con, $sql, $pgParam);
+    if (!$query){
+        systemError('systemError(' . $funcId . ') SQL Error：', $sql . print_r($pgParam, true));
+    } else {
+        $recCnt = pg_num_rows($query);
+    }
+
+    $html = '';
+    if ($recCnt != 0){
+        $newsArray = pg_fetch_all($query);
+    }
+
+    foreach ($newsArray as $k => $v){
+        $titleEncoded = urlencode(str_replace(' ', '-', $newsArray[$k]['title']));
+        $urlRedirect = 'tin-tuc.php?key='.$newsArray[$k]['id'].'&'.$titleEncoded.'';
+        if ($k !== 0){
+            $active = '';
+        }
+        $html .= <<< EOF
+            <div class="carousel-item {$active}">
+                <a href="{$urlRedirect}">
+                    <img class="d-block w-100 img-fuild" alt="" style="object-fit: cover;" height="400px" h src="{$newsArray[$k]['thumbnail']}" alt="{$newsArray[$k]['thumbnail']}" data-holder-rendered="true">
+                </a>
+                <div class="carousel-caption-outstanding">
+                    <a href="{$urlRedirect}" class="title-content-h2">
+                        <h2 class="card-title text-carousel limit-text-line">{$newsArray[$k]['title']}</h2>
+                    </a>
+                </div>
+            </div>
+EOF;
+    }
+    return $html;
+}
+
+function getNewsMeta($con, $funcId, $param){
+    $dataNews = [];
+    $pgParam = [];
+    $pgParam[] = $param['key'];
+    $recCnt = 0;
+
+    $sql = "";
+    $sql .= "SELECT news.id                         ";
+    $sql .= "     , news.title                      ";
+    $sql .= "     , news.shortdescription           ";
+    $sql .= "     , news.thumbnail                  ";
+    $sql .= "  FROM news                            ";
+    $sql .= " INNER JOIN category                   ";
+    $sql .= "    ON news.category = category.id     ";
+    $sql .= " WHERE news.deldate IS NULL            ";
+    $sql .= "   AND category.deldate IS NULL        ";
+    $sql .= "   AND news.id = $1                    ";
+
+    $query = pg_query_params($con, $sql, $pgParam);
+    if (!$query){
+        systemError('systemError(' . $funcId . ') SQL Error：', $sql . print_r($pgParam, true));
+    } else {
+        $recCnt = pg_num_rows($query);
+    }
+
+    $html = '';
+    if ($recCnt != 0){
+        $dataNews = pg_fetch_assoc($query);
+    }
+    return ['thumbnail'  => $dataNews['thumbnail'],
+        'title'      => $dataNews['title'],
+        'shortdescription' => $dataNews['shortdescription']
+    ];
+}
+
+function getCategoryMeta($con, $funcId, $param){
+    $dataCate = [];
+    $pgParam = [];
+    $pgParam[] = $param['url'];
+    $recCnt = 0;
+
+    $sql = "";
+    $sql .= "SELECT id                              ";
+    $sql .= "     , category                        ";
+    $sql .= "  FROM category                        ";
+    $sql .= " WHERE deldate IS NULL                 ";
+    $sql .= "   AND urlkey = $1                     ";
+
+    $query = pg_query_params($con, $sql, $pgParam);
+    if (!$query){
+        systemError('systemError(' . $funcId . ') SQL Error：', $sql . print_r($pgParam, true));
+    } else {
+        $recCnt = pg_num_rows($query);
+    }
+
+    $html = '';
+    if ($recCnt != 0){
+        $dataCate = pg_fetch_assoc($query);
+    }
+    return $dataCate;
 }
 ?>

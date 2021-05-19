@@ -46,34 +46,4 @@ print <<< EOF
 </div>
 </footer>
 EOF;
-
-function getAllCategoryFoot($con, $funcId){
-    $pgParam = [];
-    $recCnt = 0;
-
-    $sql = "";
-    $sql .= "SELECT id                  ";
-    $sql .= "     , urlkey             ";
-    $sql .= "     , category            ";
-    $sql .= "  FROM category            ";
-    $sql .= " WHERE deldate IS NULL     ";
-    $sql .= " ORDER BY id ASC           ";
-
-    $query = pg_query_params($con, $sql, $pgParam);
-    if (!$query){
-        systemError('systemError(' . $funcId . ') SQL Error：', $sql . print_r($pgParam, true));
-    } else {
-        $recCnt = pg_num_rows($query);
-    }
-
-    $html = '';
-    if ($recCnt != 0){
-        while ($row = pg_fetch_assoc($query)){
-            $html .= <<< EOF
-                <li class="list-categories" style="border-bottom: 1px solid rgba(255, 255, 255, 0.460); font-family: 'SVN-AgencyFBbold'; font-size: 20px;"><a href="danh-muc.php?url={$row['urlkey']}">{$row['category']}</a></li>
-            EOF;
-        }
-    }
-    return $html;
-}
 ?>

@@ -68,7 +68,7 @@ echo <<<EOF
             <article class="col-md-8 col-sm-12 col-xs-12">
                 <div class="content-box-news">
                     <nav aria-label="breadcrumb">
-                        <a href="trang-chu.php"><i class="fas fa-home"></i> Trang chủ</a> / <a href="danh-muc.php?url={$htmlNews['urlkey']}">{$iconCate}&nbsp{$htmlNews['category']}</a> / <a>{$htmlNews['title']}</a>
+                        <a href="http://{$_SERVER['SERVER_NAME']}"><i class="fas fa-home"></i> Trang chủ</a> / <a href="danh-muc.php?url={$htmlNews['urlkey']}">{$iconCate}&nbsp{$htmlNews['category']}</a> / <a>{$htmlNews['title']}</a>
                     </nav>
                    <header style="margin-top: 43px;">
                         <a href="danh-muc.php?url={$htmlNews['urlkey']}" class="thecategory">{$htmlNews['category']}</a>

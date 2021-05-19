@@ -123,7 +123,7 @@ echo <<<EOF
             <article class="col-md-8 col-sm-12 col-xs-12">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="trang-chu.php">Trang chủ</a></li>
+                            <li class="breadcrumb-item"><a href="http://{$_SERVER['SERVER_NAME']}">Trang chủ</a></li>
                             <li class="breadcrumb-item active" aria-current="page">{$htmlCategoryByUrl['category']}</li>
                         </ol>
                     </nav>

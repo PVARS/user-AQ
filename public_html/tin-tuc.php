@@ -70,7 +70,7 @@ echo <<<EOF
                     <nav aria-label="breadcrumb">
                         <a href="http://{$_SERVER['SERVER_NAME']}"><i class="fas fa-home"></i> Trang chủ</a> / <a href="danh-muc.php?url={$htmlNews['urlkey']}">{$iconCate}&nbsp{$htmlNews['category']}</a> / <a>{$htmlNews['title']}</a>
                     </nav>
-                   <header style="margin-top: 43px;">
+                   <header class="mt-5">
                         <a href="danh-muc.php?url={$htmlNews['urlkey']}" class="thecategory">{$htmlNews['category']}</a>
                         <span style="font-family: 'Open Sans'">
                             Đăng bởi <font style="color: #d61543; ">{$htmlNews['createby']}</font> - Ngày đăng: {$dateTime}
@@ -205,7 +205,7 @@ function getOutstandingNews($con, $funcId){
     if ($recCnt != 0){
         while ($row = pg_fetch_assoc($query)){
             $thumbnail = checkImage($row['thumbnail']);
-            $titleEncoded = urlencode(str_replace(' ', '-', $row['title']));
+            $titleEncoded = convert_name($row['title']);
             $urlRedirect = 'tin-tuc.php?key='.$row['id'].'&'.$titleEncoded.'';
             $html .= <<< EOF
             <div class="container content-news-transfer mt-unset">

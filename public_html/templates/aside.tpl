@@ -15,13 +15,14 @@ $htmlDisperserNews = getDisperserNews($con, $funcId);
 print <<< EOF
 <aside class="col-md-4 col-sm-12 col-xs-12">
 <div class="box-search">
-    <h3 style="font-family: 'SVN-AgencyFBbold'; text-transform: uppercase; border-bottom: 4px solid rgba(0, 0, 0, 0.15);padding-bottom: 18px; margin-bottom: 26px; color: #454d59;">
-        Tìm kiếm</h3>
+    <h3 style="font-family: 'SVN-AgencyFBbold'; text-transform: uppercase; border-bottom: 4px solid rgba(0, 0, 0, 0.15);padding-bottom: 18px; margin-bottom: 26px; color: #454d59;">Tìm kiếm</h3>
     <form action="tim-kiem.php" method="GET" id="search-form">
-        <input type="text" name="tu-khoa" placeholder="Từ khoá" class="search-input s" value="{$valueKeyWord}">
-        <button class="search-img" type="submit">
-            <i class="fa fa-search"></i>
-        </button>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control search-input s" name="tu-khoa" placeholder="Từ khoá" value="{$valueKeyWord}">
+            <div class="input-group-append">
+                <button type="submit" class="input-group-text search-img"><i class="fa fa-search"></i></button>
+            </div>
+        </div>
     </form>
 </div>
 <div class="iframe-facebook">

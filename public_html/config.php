@@ -1,7 +1,7 @@
 <?php
 //Meta html
 $TEMP_APP_META_PATH = './templates/meta.tpl';
-$TEMP_APP_METAJS_PATH = './templates/meta-js.tpl';
+$TEMP_APP_METAJS_PATH = './templates/metajs.tpl';
 
 //Header
 $TEMP_APP_HEADER_PATH = './templates/header.tpl';

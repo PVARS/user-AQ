@@ -33,6 +33,7 @@ print <<< EOF
 <meta property="og:description" content="{$valueDescription}" />
 <meta property="og:image" content="{$valueThumbnail}" />
 <title>Arsenal Quán - Trang thông tin điện tử Arsenal</title>
+<link rel="shortcut icon" href="favicon.ico"/>
 <link rel="stylesheet" href="plugins/css/style.css">
 <link rel="stylesheet" href="plugins/css/bootstrap.min.css">
 <link rel="stylesheet" href="plugins/css/w3.css">

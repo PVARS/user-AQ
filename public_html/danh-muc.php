@@ -251,7 +251,7 @@ function getNewsByCategory($con, $param, $funcId, $start, $limit){
         while ($row = pg_fetch_assoc($query)){
             $thumbnail = checkImage($row['thumbnail']);
             $urlKey = $row['urlkey'];
-            $titleEncoded = urlencode(str_replace(' ', '-', $row['title']));
+            $titleEncoded = convert_name($row['title']);
             $urlRedirect = 'tin-tuc.php?key='.$row['id'].'&'.$titleEncoded.'';
             $html .= <<< EOF
                 <div class="container content-news-of-arsenal">

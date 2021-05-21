@@ -35,7 +35,8 @@ $htmlOutstandingNews = getOutstandingNews($con, $funcId);
 //Decode to HTML icon
 $iconCate = html_entity_decode($htmlNews['icon']);
 //Format date
-$dateTime = date('d/m/Y H:i', strtotime($htmlNews['createdate']));
+$datePost = date('d/m/Y', strtotime($htmlNews['createdate']));
+$timePost = date('H:i', strtotime($htmlNews['createdate']));
 
 //-----------------------------------------------------------
 // HTML
@@ -72,9 +73,9 @@ echo <<<EOF
                     </nav>
                    <header class="mt-5">
                         <a href="danh-muc.php?url={$htmlNews['urlkey']}" class="thecategory">{$htmlNews['category']}</a>
-                        <span style="font-family: 'Open Sans'">
-                            Đăng bởi <font style="color: #d61543; ">{$htmlNews['createby']}</font> - Ngày đăng: {$dateTime}
-                        </span>
+                        <p class="mt-4" style="font-family: 'Open Sans'">
+                            Đăng bởi <font style="color: #d61543; ">{$htmlNews['createby']}</font> vào lúc {$timePost} - {$datePost}
+                        </p>
                     </header>
                     {$htmlNews['html']}
                 </div>

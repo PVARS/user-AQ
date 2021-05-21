@@ -136,7 +136,7 @@ echo <<<EOF
                             {$htmlAnalysisArsenal}
                         </div>
                         <div class="d-flex justify-content-center block-mt">
-                            <div class="pagination mt-5">
+                            <div class="pagination">
                                 <a class="loadMore" href="danh-muc.php?url=phan-tich">Xem thêm&nbsp;<i class="fas fa-arrow-right"></i></a>
                             </div>
                         </div>
@@ -443,7 +443,7 @@ function getAnalysisArsenal($con, $funcId){
             $titleEncoded = convert_name($row['title']);
             $urlRedirect = 'tin-tuc.php?key='.$row['id'].'&'.$titleEncoded.'';
             $html .= <<< EOF
-                <div class="col-lg-4 col-sm-12 mt-3">
+                <div class="col-lg-4 col-sm-12 mt-3 mb-5">
                     <a href="{$urlRedirect}">
                         <img src="{$thumbnail}" class="card-img-top img-fuild object-fit-image" alt="{$thumbnail}">
                     </a>

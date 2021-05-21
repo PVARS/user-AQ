@@ -39,7 +39,7 @@ echo <<<EOF
                 <h1><span>4</span><span>0</span><span>4</span></h1>
             </div>
             <h2>Arsenal Quán xin lỗi! Trang bạn yêu cầu không tồn tại</h2>
-            <a class="back-to-home" href="trang-chu.php">Trở lại trang chủ <i class="fas fa-arrow-right"></i></a>
+            <a class="back-to-home" href="http://{$_SERVER['SERVER_NAME']}">Trở lại trang chủ <i class="fas fa-arrow-right"></i></a>
         </div>
     </div>
     <!--Content-->

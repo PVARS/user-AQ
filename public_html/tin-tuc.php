@@ -42,7 +42,14 @@ $timePost = date('H:i', strtotime($htmlNews['createdate']));
 // HTML
 //-----------------------------------------------------------
 $titleHTML = '';
-$cssHTML = '';
+$cssHTML = <<< EOF
+<style>
+.breadcrumb-a:hover{
+    text-decoration: unset!important;
+    color: unset!important;
+}
+</style>
+EOF;
 $scriptHTML = '';
 
 echo <<<EOF
@@ -69,7 +76,7 @@ echo <<<EOF
             <article class="col-md-8 col-sm-12 col-xs-12">
                 <div class="content-box-news">
                     <nav aria-label="breadcrumb">
-                        <a href="http://{$_SERVER['SERVER_NAME']}"><i class="fas fa-home"></i> Trang chủ</a> / <a href="danh-muc.php?url={$htmlNews['urlkey']}">{$iconCate}&nbsp{$htmlNews['category']}</a> / <a>{$htmlNews['title']}</a>
+                        <a class="breadcrumb-a" href="http://{$_SERVER['SERVER_NAME']}"><i class="fas fa-home"></i> Trang chủ</a> / <a class="breadcrumb-a" href="danh-muc.php?url={$htmlNews['urlkey']}">{$iconCate}&nbsp{$htmlNews['category']}</a> / <a>{$htmlNews['title']}</a>
                     </nav>
                    <header class="mt-5">
                         <a href="danh-muc.php?url={$htmlNews['urlkey']}" class="thecategory">{$htmlNews['category']}</a>
@@ -229,5 +236,45 @@ EOF;
         }
     }
     return $html;
+}
+
+function getView($con, $funcId, $param){
+    $pgParam = [];
+    $pgParam[] = $param['key'];
+    $recCnt = 0;
+    $views = [];
+
+    $sql = "";
+    $sql .= "SELECT view           ";
+    $sql .= "  FROM news           ";
+    $sql .= " WHERE id = $1        ";
+
+    $query = pg_query_params($con, $sql, $pgParam);
+    if (!$query){
+        systemError('systemError(' . $funcId . ') SQL Error：', $sql . print_r($pgParam, true));
+    } else{
+        $recCnt = pg_num_rows($query);
+    }
+
+    if ($recCnt != 0){
+        $views = pg_fetch_assoc($query);
+    }
+    return $views;
+}
+
+function udateView($con, $funcId, $param, $view){
+    $pgParam = [];
+    $pgParam[] = $view;
+    $pgParam[] = $param['key'];
+
+    $sql = "";
+    $sql .= "UPDATE news           ";
+    $sql .= "   SET view = $1      ";
+    $sql .= " WHERE id = $2        ";
+
+    $query = pg_query_params($con, $sql, $pgParam);
+    if (!$query){
+        systemError('systemError(' . $funcId . ') SQL Error：', $sql . print_r($pgParam, true));
+    }
 }
 ?>

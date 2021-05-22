@@ -200,7 +200,8 @@ function totalRecord($con, $funcId, $param){
     $sql .= "    ON news.category = category.id         ";
     $sql .= " WHERE news.DELDATE IS NULL                ";
     $sql .= "   AND category.deldate IS NULL            ";
-    $sql .= "   AND urlkey = $1                         ";
+    $sql .= "   AND category.urlkey = $1                ";
+
     $query = pg_query_params($con, $sql, $pgParam);
     if (!$query){
         systemError('systemError(' . $funcId . ') SQL Error：', $sql . print_r($pgParam, true));

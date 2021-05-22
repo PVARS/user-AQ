@@ -82,7 +82,7 @@ echo <<<EOF
             <article class="col-md-8 col-sm-12 col-xs-12">
                 <!--Content-->
                 <div class="title-arsenal">
-                    <h2 class="news-title-arsenal">Tin Mới Nhất</h2>
+                    <h2 class="news-title-arsenal">Tin Mới</h2>
                 </div>
                 <div class="card-news-content">
                     <div class="card-news">

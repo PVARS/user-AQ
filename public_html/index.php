@@ -321,7 +321,7 @@ function getTransferNews($con, $funcId){
     $sql .= "     , createby            ";
     $sql .= "  FROM news                ";
     $sql .= " WHERE deldate IS NULL     ";
-    $sql .= " AND category = 3          ";
+    $sql .= " AND category = 2          ";
     $sql .= " ORDER BY createdate DESC  ";
     $sql .= " LIMIT 3                   ";
 
@@ -373,7 +373,7 @@ function getNewsArsenal($con, $funcId){
     $sql .= "     , createby            ";
     $sql .= "  FROM news                ";
     $sql .= " WHERE deldate IS NULL     ";
-    $sql .= " AND category = 2          ";
+    $sql .= " AND category = 1          ";
     $sql .= " ORDER BY createdate DESC  ";
     $sql .= " LIMIT 3                   ";
 
@@ -425,7 +425,7 @@ function getAnalysisArsenal($con, $funcId){
     $sql .= "     , createby            ";
     $sql .= "  FROM news                ";
     $sql .= " WHERE deldate IS NULL     ";
-    $sql .= " AND category = 4          ";
+    $sql .= " AND category = 3          ";
     $sql .= " ORDER BY createdate DESC  ";
     $sql .= " LIMIT 3                   ";
 
@@ -448,7 +448,7 @@ function getAnalysisArsenal($con, $funcId){
                         <img src="{$thumbnail}" class="card-img-top img-fuild object-fit-image" alt="{$thumbnail}">
                     </a>
                     <a href="{$urlRedirect}" class="title-content-h2">
-                        <h3 class="header-news-transfer card-title title-laste-news">{$row['title']}</h3>
+                        <h3 class="card-title title-laste-news limit-text-line">{$row['title']}</h3>
                     </a>
                     <p class="card-text content-news mt-3 limit-text-line">{$row['shortdescription']}</p>
                     <div class="post-info">

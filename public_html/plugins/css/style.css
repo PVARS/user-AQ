@@ -106,7 +106,8 @@
 }
 
 .title-laste-news {
-    font-family: 'SVN-AgencyFB'
+    font-family: 'SVN-AgencyFB';
+    color: #454d59;
 }
 
 .title-laste-news:hover {

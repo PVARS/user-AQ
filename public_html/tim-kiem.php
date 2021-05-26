@@ -20,7 +20,13 @@ $param = getParam();
 $valueKeyWord = $param['tu-khoa'] ?? '';
 
 $htmlNewsByKeyWord = '';
-$htmlNewsByKeyWord = getNewsByKeyWord($con, $funcId, $valueKeyWord);
+if (!empty($param['tu-khoa'])) $htmlNewsByKeyWord = getNewsByKeyWord($con, $funcId, $valueKeyWord);
+else $htmlNewsByKeyWord .= <<< EOF
+    <div class="container front-view-content mt-3 pb-5">
+        Không có dữ liệu tìm kiếm...
+    </div>
+EOF;
+
 
 //-----------------------------------------------------------
 // HTML

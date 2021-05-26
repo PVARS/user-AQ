@@ -5,10 +5,12 @@
  */
 function openDB(){
     $dsn = array(
-        'host'     => '139.59.120.51',
+//        'host'     => '139.59.120.51',
+        'host'     => 'localhost',
         'port'     => '5432',
         'user'     => 'postgres',
-        'dbname'   => 'arsenalquan',
+//        'dbname'   => 'arsenalquan',
+        'dbname'   => 'arsequan',
         'password' => '123456'
     );
 
@@ -200,7 +202,7 @@ function getDisperserNews($con, $funcId){
     $sql .= "     , thumbnail           ";
     $sql .= "  FROM news                ";
     $sql .= " WHERE deldate IS NULL     ";
-    $sql .= " AND category = 5          ";
+    $sql .= " AND category = 4          ";
     $sql .= " ORDER BY createdate DESC  ";
     $sql .= " LIMIT 3                   ";
 

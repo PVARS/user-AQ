@@ -39,6 +39,7 @@ print <<< EOF
 <link rel="stylesheet" href="plugins/css/w3.css">
 <link rel="stylesheet" href="plugins/fontawesome/css/all.css">
 <link rel="stylesheet" href="plugins/css/style-page-news.css">
+<meta name="theme-color" content="#D61543">
 {$cssHTML}
 EOF;
 ?>
